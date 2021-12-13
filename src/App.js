@@ -1,78 +1,49 @@
 import './App.css';
-import { useForm } from 'react-hook-form';
 import loginService from './services/login';
 import jwt from 'jwt-simple';
 import { useUser } from './hooks/useUser';
-import moment from 'moment';
+import Login from './components/Login';
+import Home from './components/Home';
+import Profile from './components/Profile';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
 
 function App() {
   const { userData, setUserData } = useUser();
-  const { register, formState: { errors }, handleSubmit } = useForm();
-
-  const onSubmit = async (data) => {
-    try {
-      const user = await loginService.login({
-        email: data.email,
-        password: data.password
-      })
-      if (user.x_token) {
-        await loginService.userToken({
-          id: user.id,
-          x_token: user.x_token,
-        })
-        window.localStorage.setItem(
-          'loggedAppUser', JSON.stringify(user)
-        )
-        setUserData(user)
-      } else {
-        console.log('Contraseña o usuario incorrectos')
-      }
-    } catch (e) {
-      console.log(e);
-    }
-
-  }
 
   const logOut = () => {
     const userLogout = window.localStorage.clear();
     setUserData(null);
   }
 
-  if (userData !== null) {
-    const x_token = userData.x_token;
-    let payload = {}
-    payload = jwt.decode(x_token, 'Nocan');
-    payload.expiredAt < moment().unix() && logOut();
-    console.log(payload.expiredAt,' - ', 'Current : ', moment().unix());
+  const dummyFunction = (x_token) => {
+      let payload = {}
+      payload = jwt.decode(x_token, 'Nocan');
+      const timer = (payload.expiredAt * 1000)-Date.now();
+      setTimeout(()=>{
+        logOut();
+      },timer)
   }
-  return (
-    <div className="App">
-      <header className="App-header">
-        {userData !== null && !userData.error ? (
-          <>
-            <h1>Welcome {userData.email}</h1>
-            <button onClick={() => logOut()}>Log out</button>
-          </>
-        ) : (
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <input placeholder="email" {...register('email', { required: true })} />
-              {errors.email?.type === 'required' && "First name is required"}
-            </div>
-            <div>
-              <input placeholder="password" {...register('password', { required: true })} />
-              {errors.password && "Last name is required"}
-            </div>
-            <div>
-              <button type="submit">
-                Login
-              </button>
-            </div>
-          </form>
 
-        )}
-      </header>
-    </div>
+
+
+  return (
+    <Router>
+    <Routes>
+      <Route path="/" element={<Home/>} />
+      <Route path="/profile" element={<Profile logOut={logOut} userData={userData} />}/>
+      <Route path="/login" element={<Login
+      logOut={logOut} 
+      loginService={loginService} 
+      userData={userData}
+      dummyFunction={dummyFunction}
+      setUserData={setUserData}
+       />} />
+    </Routes>
+    </Router>
   );
 }
 
