@@ -1,7 +1,8 @@
 import axios from "axios";
 
 
-const baseUrl = 'https://myloginapi.herokuapp.com/api'
+/* const baseUrl = 'https://myloginapi.herokuapp.com/api' */
+const baseUrl = 'http://localhost:3050/api'
 
 let token = null;
 
@@ -27,4 +28,10 @@ const userToken = async tokenData => {
     return res;
 }
 
-export default {login, userToken, setToken}
+const exportedObject = {
+    login,
+    userToken,
+    setToken,
+}
+
+export default exportedObject

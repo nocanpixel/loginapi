@@ -1,9 +1,10 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+
 export default function Login({userData, logOut, loginService,dummyFunction,setUserData}){
     const { register, formState: { errors }, handleSubmit } = useForm();
     const navigate = useNavigate();
+    
     const onSubmit = async (data) => {
       try {
         const user = await loginService.login({
@@ -21,7 +22,6 @@ export default function Login({userData, logOut, loginService,dummyFunction,setU
           setUserData(user)
           dummyFunction(user.x_token);
           navigate('/profile');
-          console.log('here')
         } else {
           console.log('Contraseña o usuario incorrectos')
         }
@@ -30,11 +30,7 @@ export default function Login({userData, logOut, loginService,dummyFunction,setU
       }
   
     }
-    useEffect(()=>{
-      if(userData !== null && !userData.error){
-        navigate('/profile')
-      }
-    },[])
+
     return(
         <div className="App">
         <header className="App-header">

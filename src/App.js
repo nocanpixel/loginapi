@@ -5,17 +5,22 @@ import { useUser } from './hooks/useUser';
 import Login from './components/Login';
 import Home from './components/Home';
 import Profile from './components/Profile';
+import LoginRoute from './components/LoginRoute';
+import NotFound from './components/NotFound';
+
+
 import {
   BrowserRouter as Router,
   Routes,
   Route
 } from "react-router-dom";
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   const { userData, setUserData } = useUser();
 
   const logOut = () => {
-    const userLogout = window.localStorage.clear();
+    typeof window!=="undefined" && window.localStorage.clear();
     setUserData(null);
   }
 
@@ -33,15 +38,20 @@ function App() {
   return (
     <Router>
     <Routes>
+      <Route path="*" element={<NotFound/>} />
       <Route path="/" element={<Home/>} />
-      <Route path="/profile" element={<Profile logOut={logOut} userData={userData} />}/>
-      <Route path="/login" element={<Login
-      logOut={logOut} 
-      loginService={loginService} 
-      userData={userData}
-      dummyFunction={dummyFunction}
-      setUserData={setUserData}
-       />} />
+      <Route path="/profile" element={<ProtectedRoute userData={userData} />} >
+        <Route path="" element={ <Profile dummyFunction={dummyFunction} logOut={logOut} userData={userData} /> } />
+      </Route>
+      <Route path="/login" element={<LoginRoute userData={userData} />} >
+        <Route path="" element={<Login
+        logOut={logOut} 
+        loginService={loginService} 
+        userData={userData}
+        dummyFunction={dummyFunction}
+        setUserData={setUserData}
+        />} />
+      </Route>
     </Routes>
     </Router>
   );

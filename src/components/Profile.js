@@ -1,17 +1,15 @@
 import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
 
-export default function Profile({logOut,userData}){
-    const navigate = useNavigate();
+export default function Profile({logOut,userData,dummyFunction}){
     useEffect(()=>{
-        if(userData === null){
-            navigate('/login');
+        if(userData){
+            dummyFunction(userData.x_token)
         }
-    })
+    },[])
     return(
         <div className="App">
         <header className="App-header">
-        {userData !== null && !userData.error &&(
+        {userData !== null &&(
             <>
             <h1>User profile</h1>
             <h1>Welcome {userData.email}</h1>
