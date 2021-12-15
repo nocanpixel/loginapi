@@ -1,8 +1,8 @@
 import axios from "axios";
 
 
-/* const baseUrl = 'https://myloginapi.herokuapp.com/api' */
-const baseUrl = 'http://localhost:3050/api'
+const baseUrl = 'https://myloginapi.herokuapp.com/api'
+/* const baseUrl = 'http://localhost:3050/api' */
 
 let token = null;
 

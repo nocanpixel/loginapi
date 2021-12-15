@@ -1,9 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-export default function Login({userData, logOut, loginService,dummyFunction,setUserData}){
+
+export default function Login({userData, logOut, loginService,setUserData}){
     const { register, formState: { errors }, handleSubmit } = useForm();
     const navigate = useNavigate();
+    
     
     const onSubmit = async (data) => {
       try {
@@ -20,7 +22,6 @@ export default function Login({userData, logOut, loginService,dummyFunction,setU
             'loggedAppUser', JSON.stringify(user)
           )
           setUserData(user)
-          dummyFunction(user.x_token);
           navigate('/profile');
         } else {
           console.log('Contraseña o usuario incorrectos')
