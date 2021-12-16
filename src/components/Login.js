@@ -14,6 +14,7 @@ export default function Login({userData, logOut, loginService,setUserData}){
           password: data.password
         })
         if (user.x_token) {
+          console.log(user)
           await loginService.userToken({
             id: user.id,
             x_token: user.x_token,
@@ -36,12 +37,6 @@ export default function Login({userData, logOut, loginService,setUserData}){
         <div className="App">
         <header className="App-header">
           <h1>Iniciar sesion</h1>
-          {userData !== null && !userData.error ? (
-          <>
-            <h1>Welcome {userData.email}</h1>
-            <button onClick={() => logOut()}>Log out</button>
-          </>
-        ) : (
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
               <input placeholder="email" {...register('email', { required: true })} />
@@ -57,8 +52,6 @@ export default function Login({userData, logOut, loginService,setUserData}){
               </button>
             </div>
           </form>
-
-        )}
         </header>
       </div>
         

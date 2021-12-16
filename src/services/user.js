@@ -1,8 +1,8 @@
 import axios from "axios";
 
 
-const baseUrl = 'https://myloginapi.herokuapp.com/api'
-/* const baseUrl = 'http://localhost:3050/api' */
+/* const baseUrl = 'https://myloginapi.herokuapp.com/api' */
+const baseUrl = 'http://localhost:3050/api'
 
 let token = null;
 
@@ -16,9 +16,19 @@ let config = {
     }
 }
 
+
 const login = async credentials => {
-    const {data} = await axios.post(`${baseUrl}/users/login`, credentials, config);
-    return data
+    const {data} = await axios.post(`${baseUrl}/login`, credentials, config);
+    return data;
+}
+
+const userUpdate = async newData =>{
+    const { data } = await axios.put(`${baseUrl}/users/${newData.id}`,newData, {
+        headers: {
+            'user-token': `${newData.x_token}`
+        }
+    });
+    return data;
 }
 
 const userToken = async tokenData => {
@@ -30,6 +40,7 @@ const userToken = async tokenData => {
 
 const exportedObject = {
     login,
+    userUpdate,
     userToken,
     setToken,
 }

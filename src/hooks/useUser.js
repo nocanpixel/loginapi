@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import loginService from '../services/login';
+import loginService from '../services/user';
 
 export const useUser =()=> {
     const [userData, setUserData] = useState(null);

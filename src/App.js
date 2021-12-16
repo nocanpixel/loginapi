@@ -1,5 +1,5 @@
 import './App.css';
-import loginService from './services/login';
+import loginService from './services/user';
 import { useUser } from './hooks/useUser';
 import Login from './components/Login';
 import Home from './components/Home';
@@ -28,7 +28,7 @@ function App() {
       <Route path="*" element={<NotFound/>} />
       <Route path="/" element={<Home/>} />
       <Route path="/profile" element={<ProtectedRoute userData={userData} />} >
-        <Route path="" element={ <Profile logOut={logOut} userData={userData} /> } />
+        <Route path="" element={ <Profile logOut={logOut} userData={userData} loginService={loginService} /> } />
       </Route>
       <Route path="/login" element={<LoginRoute userData={userData} />} >
         <Route path="" element={<Login
